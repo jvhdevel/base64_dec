@@ -30,9 +30,31 @@ std::size_t get_index(const std::array<char, 65> &a, const char c) {
 }
 
 int main(int argc, const char *argv[]) {
-  std::vector<chunk> chunks = to_chunks(input_str);
-
+  std::vector<chunk> chunks;
   std::string output;
+
+  if (argc < 2) {
+    std::cout << "No input supplied! Running Test!\n";
+
+    chunks = to_chunks(input_str);
+    output = "";
+
+    for (chunk c : chunks) {
+      for (char e : decode(c)) {
+        output += e;
+      }
+    }
+
+    std::cout << "Input     : " << input_str << "\n";
+    std::cout << "Expected  : " << expected << "\n\n";
+    std::cout << "Output    : " << output << "\n\n";
+    std::cout << "Matching? " << (output == expected ? "Yes" : "No") << "\n";
+    return 0;
+  }
+
+  chunks = to_chunks(argv[1]);
+  output = "";
+
   for (auto c : chunks) {
     for (char e : decode(c)) {
       if (e == '\0') { break; }
@@ -40,11 +62,7 @@ int main(int argc, const char *argv[]) {
     }
   }
 
-  std::cout << input_str << "\n\n";
-  std::cout << expected << "\n\n";
-  std::cout << output << "\n\n";
-
-  std::cout << "Matching output? " << (output == expected ? "True" : "False") << "\n";
+  std::cout << output << "\n";
 
   return 0;
 }
